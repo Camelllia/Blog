@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @NoArgsConstructor
 public class MemberForm {
 
-    private Long id;
     private String username;
     private String password;
     private String email;
@@ -18,8 +17,7 @@ public class MemberForm {
     private String role;
 
     @Builder
-    public MemberForm(Long id, String username, String password, String email, Integer age, String role) {
-        this.id = id;
+    public MemberForm(String username, String password, String email, Integer age, String role) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -29,7 +27,6 @@ public class MemberForm {
 
     public Member toEntity() {
         return Member.builder()
-                .id(id)
                 .username(username)
                 .password(new BCryptPasswordEncoder().encode(password))
                 .email(email)
