@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -25,11 +26,8 @@ public class MemberController {
     }
 
     @PostMapping("/login/form")
-    public String join(@RequestBody @Valid MemberForm form, BindingResult result) {
-        if(result.hasErrors()) {
-            return "user/login/register";
-        }
+    @ResponseBody
+    public void join(@RequestBody @Valid MemberForm form) throws Exception{
         memberService.join(form);
-        return "redirect:/";
     }
 }
