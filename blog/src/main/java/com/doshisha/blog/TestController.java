@@ -11,7 +11,7 @@ public class TestController {
 
     @GetMapping("/")
     public String home(Model model){
-        return "home";
+        return "redirect:/login";
     }
     @GetMapping("/user")
     public String dispUser(Model model){
