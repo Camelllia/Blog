@@ -54,7 +54,7 @@ class MemberControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         //expected
-        mockMvc.perform(post("/login/form")
+        mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                         .with(csrf())
@@ -79,7 +79,7 @@ class MemberControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         //when
-        mockMvc.perform(post("/login/form")
+        mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                         .with(csrf())
@@ -111,7 +111,7 @@ class MemberControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         //expected
-        mockMvc.perform(post("/login/form")
+        mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
                         .content(json)
                         .with(csrf())

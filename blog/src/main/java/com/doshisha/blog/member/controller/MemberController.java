@@ -1,5 +1,6 @@
 package com.doshisha.blog.member.controller;
 
+import com.doshisha.blog.member.dto.LoginForm;
 import com.doshisha.blog.member.dto.MemberForm;
 import com.doshisha.blog.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -24,21 +25,29 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/login/form")
+    @GetMapping("/join")
     public String form(Model model) {
         model.addAttribute("userForm", new MemberForm());
         return "user/login/register";
     }
 
-    @PostMapping("/login/form")
+    @PostMapping("/join")
     @ResponseBody
-    public void join(@RequestBody @Valid MemberForm form) throws Exception{
-        memberService.join(form);
+    public void join(@RequestBody @Valid MemberForm request) throws Exception{
+        memberService.join(request);
     }
 
-    @GetMapping("/login")
-    public String login() {
+    @GetMapping("/")
+    public String index() {
         return "user/login/login";
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public void login(@RequestBody @Valid LoginForm request) throws Exception{
+        System.out.println(request.getEmail());
+        System.out.println(request.getPassword());
+        System.out.println("login");
     }
 
     @GetMapping("/logout")
