@@ -1,6 +1,5 @@
 package com.doshisha.blog.member.dto;
 
-import com.doshisha.blog.member.domain.Member;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +20,6 @@ public class LoginForm {
     @Builder
     public LoginForm(String email, String password) {
         this.email = email;
-        this.password = password;
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 }

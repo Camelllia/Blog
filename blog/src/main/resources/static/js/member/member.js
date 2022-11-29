@@ -17,10 +17,10 @@ var login = function () {
         },
         data : JSON.stringify(param),
         success : function(data) {
-
+            alert("로그인 성공");
         },
-        error : function() {
-            alert("Error Occurred");
+        error : function(request) {
+            alert(request.responseText);
         }
     });
 

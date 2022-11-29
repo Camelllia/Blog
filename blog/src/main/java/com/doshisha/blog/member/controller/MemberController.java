@@ -33,7 +33,7 @@ public class MemberController {
 
     @PostMapping("/join")
     @ResponseBody
-    public void join(@RequestBody @Valid MemberForm request) throws Exception{
+    public void join(@RequestBody @Valid MemberForm request) throws Exception {
         memberService.join(request);
     }
 
@@ -44,9 +44,8 @@ public class MemberController {
 
     @PostMapping("/login")
     @ResponseBody
-    public void login(@RequestBody @Valid LoginForm request) throws Exception{
-        System.out.println(request.getEmail());
-        System.out.println(request.getPassword());
+    public void login(@RequestBody @Valid LoginForm request) throws Exception {
+        memberService.login(request);
         System.out.println("login");
     }
 

@@ -1,6 +1,7 @@
 package com.doshisha.blog.member.service;
 
 import com.doshisha.blog.member.domain.Member;
+import com.doshisha.blog.member.dto.LoginForm;
 import com.doshisha.blog.member.dto.MemberForm;
 import com.doshisha.blog.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,17 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long join(MemberForm form) {
-        Member member = form.toEntity();
+    public void join(MemberForm request) {
+        Member member = request.toEntity();
         memberRepository.save(member);
-        return member.getId();
+    }
+
+    public void login(LoginForm request) {
+        LoginForm loginForm = LoginForm.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .build();
+        
+        System.out.println(loginForm.getPassword());
     }
 }

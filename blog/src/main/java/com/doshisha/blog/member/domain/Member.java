@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name = "member")
 public class Member {
 
