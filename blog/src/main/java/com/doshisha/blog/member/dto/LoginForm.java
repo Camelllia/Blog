@@ -20,6 +20,6 @@ public class LoginForm {
     @Builder
     public LoginForm(String email, String password) {
         this.email = email;
-        this.password = new BCryptPasswordEncoder().encode(password);
+        this.password = password;
     }
 }

@@ -1,5 +1,7 @@
-package com.doshisha.blog.member.controller;
+package com.doshisha.blog.exception;
 
+import com.doshisha.blog.member.exception.MemberNotFound;
+import com.doshisha.blog.member.exception.PasswordMismatch;
 import com.doshisha.blog.member.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -21,6 +23,30 @@ public class ExceptionController {
         for(FieldError fieldError : e.getFieldErrors()) {
             errorResponse.addVaildation(fieldError.getField(), fieldError.getDefaultMessage());
         }
+
+        return errorResponse;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MemberNotFound.class)
+    @ResponseBody
+    public ErrorResponse invaildRequestHandler(MemberNotFound e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("400")
+                .message(e.getMessage())
+                .build();
+
+        return errorResponse;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PasswordMismatch.class)
+    @ResponseBody
+    public ErrorResponse invaildRequestHandler(PasswordMismatch e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("400")
+                .message(e.getMessage())
+                .build();
 
         return errorResponse;
     }

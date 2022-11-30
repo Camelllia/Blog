@@ -46,7 +46,6 @@ public class MemberController {
     @ResponseBody
     public void login(@RequestBody @Valid LoginForm request) throws Exception {
         memberService.login(request);
-        System.out.println("login");
     }
 
     @GetMapping("/logout")
