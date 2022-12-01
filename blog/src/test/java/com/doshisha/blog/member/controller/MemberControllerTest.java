@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -46,6 +45,7 @@ class MemberControllerTest {
         MemberForm request = MemberForm.builder()
                 .email("test@test.com")
                 .password("1234")
+                .passwordRepeat("1234")
                 .username("name")
                 .age(33)
                 .build();
@@ -70,6 +70,7 @@ class MemberControllerTest {
         MemberForm request = MemberForm.builder()
                 .email("test@test.com")
                 .password("1234")
+                .passwordRepeat("1234")
                 .username("name")
                 .age(33)
                 .build();
@@ -80,7 +81,6 @@ class MemberControllerTest {
         mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
                         .content(json)
-                        .with(csrf())
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -91,6 +91,7 @@ class MemberControllerTest {
         assertEquals("test@test.com", member.getEmail());
         assertEquals("name", member.getUsername());
         assertEquals(33, member.getAge());
+        assertEquals("ROLE_USER", member.getRole());
     }
 
     @Test
@@ -100,6 +101,7 @@ class MemberControllerTest {
         //given
         MemberForm request = MemberForm.builder()
                 .password("1234")
+                .passwordRepeat("1234")
                 .username("name")
                 .age(33)
                 .build();
@@ -116,6 +118,97 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다"))
                 .andExpect(jsonPath("$.vaildation.email").value("이메일을 입력해주세요"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("동일한 이메일로 중복가입 방지")
+    void test4() throws Exception{
+
+        //given
+        Member firstMember = Member.builder()
+                .email("test@test.com")
+                .password("1234")
+                .password("1234")
+                .username("doshisha")
+                .age(33)
+                .build();
+
+        memberRepository.save(firstMember);
+
+        MemberForm request = MemberForm.builder()
+                .email("test@test.com")
+                .password("1234")
+                .passwordRepeat("1234")
+                .username("name")
+                .age(33)
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/join")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                        .with(csrf())
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("중복되는 이메일입니다"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("회원가입시 비밀번호는 일치해야한다")
+    void test5() throws Exception{
+
+        //given
+        MemberForm request = MemberForm.builder()
+                .email("test@test.com")
+                .password("1234")
+                .passwordRepeat("ABCD")
+                .username("name")
+                .age(33)
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/join")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                        .with(csrf())
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("입력한 비밀번호가 일치하지 않습니다"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("회원가입시 이메일 형식을 지켜야한다")
+    void test6() throws Exception{
+
+        //given
+        MemberForm request = MemberForm.builder()
+                .email("TEST")
+                .password("1234")
+                .passwordRepeat("1234")
+                .username("name")
+                .age(33)
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/join")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                        .with(csrf())
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("이메일 형식이 아닙니다"))
                 .andDo(print());
     }
 }

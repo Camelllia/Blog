@@ -9,6 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -30,7 +34,7 @@ class MemberServiceTest {
     void test1() {
 
         //given
-        MemberForm memberForm = MemberForm.builder()
+        Member requestMember = Member.builder()
                 .email("test@test.com")
                 .password("1234")
                 .username("doshisha")
@@ -38,7 +42,7 @@ class MemberServiceTest {
                 .build();
 
         //when
-        memberService.join(memberForm);
+        memberRepository.save(requestMember);
 
         //then
         Member member = memberRepository.findAll().get(0);

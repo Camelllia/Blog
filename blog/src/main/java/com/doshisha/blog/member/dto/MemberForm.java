@@ -21,6 +21,9 @@ public class MemberForm {
     @NotBlank(message = "비밀번호를 입력해주세요")
     private String password;
 
+    @NotBlank(message = "비밀번호를 입력해주세요")
+    private String passwordRepeat;
+
     @NotBlank(message = "이메일을 입력해주세요")
     private String email;
 
@@ -28,9 +31,10 @@ public class MemberForm {
     private Integer age;
 
     @Builder
-    public MemberForm(String username, String password, String email, Integer age) {
+    public MemberForm(String username, String password, String passwordRepeat, String email, Integer age) {
         this.username = username;
         this.password = password;
+        this.passwordRepeat = passwordRepeat;
         this.email = email;
         this.age = age;
     }

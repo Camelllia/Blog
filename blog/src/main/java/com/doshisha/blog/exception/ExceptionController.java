@@ -1,7 +1,6 @@
 package com.doshisha.blog.exception;
 
-import com.doshisha.blog.member.exception.MemberNotFound;
-import com.doshisha.blog.member.exception.PasswordMismatch;
+import com.doshisha.blog.member.exception.*;
 import com.doshisha.blog.member.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -43,6 +42,42 @@ public class ExceptionController {
     @ExceptionHandler(PasswordMismatch.class)
     @ResponseBody
     public ErrorResponse invaildRequestHandler(PasswordMismatch e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("400")
+                .message(e.getMessage())
+                .build();
+
+        return errorResponse;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(OverlapEmail.class)
+    @ResponseBody
+    public ErrorResponse invaildRequestHandler(OverlapEmail e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("400")
+                .message(e.getMessage())
+                .build();
+
+        return errorResponse;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DiscordPassword.class)
+    @ResponseBody
+    public ErrorResponse invaildRequestHandler(DiscordPassword e) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .code("400")
+                .message(e.getMessage())
+                .build();
+
+        return errorResponse;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidEmailPattern.class)
+    @ResponseBody
+    public ErrorResponse invaildRequestHandler(InvalidEmailPattern e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code("400")
                 .message(e.getMessage())
