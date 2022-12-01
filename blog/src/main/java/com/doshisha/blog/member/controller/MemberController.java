@@ -1,5 +1,6 @@
 package com.doshisha.blog.member.controller;
 
+import com.doshisha.blog.security.jwt.dto.TokenInfo;
 import com.doshisha.blog.member.dto.LoginForm;
 import com.doshisha.blog.member.dto.MemberForm;
 import com.doshisha.blog.member.service.MemberService;
@@ -9,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,8 +44,9 @@ public class MemberController {
 
     @PostMapping("/login")
     @ResponseBody
-    public void login(@RequestBody @Valid LoginForm request) throws Exception {
-        memberService.login(request);
+    public TokenInfo login(@RequestBody @Valid LoginForm request) throws Exception {
+        TokenInfo tokenInfo = memberService.login(request);
+        return tokenInfo;
     }
 
     @GetMapping("/logout")

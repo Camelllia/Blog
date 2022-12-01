@@ -1,6 +1,3 @@
-var header = $("meta[name='_csrf_header']").attr('content');
-var token = $("meta[name='_csrf']").attr('content');
-
 var login = function () {
 
     var param = {
@@ -12,12 +9,10 @@ var login = function () {
         url : "/login",
         type : "POST",
         contentType: "application/json",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
-        },
         data : JSON.stringify(param),
         success : function(data) {
-            alert("로그인 성공");
+            alert(data);
+            //alert("로그인 성공");
         },
         error : function(request) {
             alert(request.responseText);

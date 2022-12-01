@@ -35,7 +35,6 @@ class MemberServiceTest {
                 .password("1234")
                 .username("doshisha")
                 .age(33)
-                .role("admin")
                 .build();
 
         //when
@@ -47,6 +46,5 @@ class MemberServiceTest {
         assertEquals("test@test.com", member.getEmail());
         assertEquals("doshisha", member.getUsername());
         assertEquals(33, member.getAge());
-        assertEquals("admin", member.getRole());
     }
 }

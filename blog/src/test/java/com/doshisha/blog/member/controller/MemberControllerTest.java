@@ -48,7 +48,6 @@ class MemberControllerTest {
                 .password("1234")
                 .username("name")
                 .age(33)
-                .role("admin")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -73,7 +72,6 @@ class MemberControllerTest {
                 .password("1234")
                 .username("name")
                 .age(33)
-                .role("admin")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
@@ -93,7 +91,6 @@ class MemberControllerTest {
         assertEquals("test@test.com", member.getEmail());
         assertEquals("name", member.getUsername());
         assertEquals(33, member.getAge());
-        assertEquals("admin", member.getRole());
     }
 
     @Test
@@ -105,7 +102,6 @@ class MemberControllerTest {
                 .password("1234")
                 .username("name")
                 .age(33)
-                .role("admin")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);

@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,16 +27,12 @@ public class MemberForm {
     @NotNull(message = "나이를 입력해주세요")
     private Integer age;
 
-    @NotBlank(message = "권한을 입력해주세요")
-    private String role;
-
     @Builder
-    public MemberForm(String username, String password, String email, Integer age, String role) {
+    public MemberForm(String username, String password, String email, Integer age) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.age = age;
-        this.role = role;
     }
 
     public Member toEntity() {
@@ -43,7 +41,6 @@ public class MemberForm {
                 .password(new BCryptPasswordEncoder().encode(password))
                 .email(email)
                 .age(age)
-                .role(role)
                 .build();
     }
 }

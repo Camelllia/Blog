@@ -1,18 +1,22 @@
 package com.doshisha.blog.member.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor
 @Table(name = "member")
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     @Column(name = "user_id")
@@ -24,7 +28,7 @@ public class Member {
 
     private String password;
 
-    @Column(name = "user_email")
+    @Column(name = "user_email", updatable = false, unique = true, nullable = false)
     private String email;
 
     @Column(name = "user_age")
@@ -40,6 +44,31 @@ public class Member {
         this.password = password;
         this.email = email;
         this.age = age;
-        this.role = role;
+        this.role = "ROLE_USER";
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
