@@ -1,19 +1,18 @@
 package com.doshisha.blog.member.controller;
 
+import com.doshisha.blog.security.SecurityUtil;
 import com.doshisha.blog.security.jwt.dto.TokenInfo;
 import com.doshisha.blog.member.dto.LoginForm;
 import com.doshisha.blog.member.dto.MemberForm;
 import com.doshisha.blog.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,8 +43,9 @@ public class MemberController {
 
     @PostMapping("/login")
     @ResponseBody
-    public TokenInfo login(@RequestBody @Valid LoginForm request) throws Exception {
+    public TokenInfo login(@RequestBody @Valid LoginForm request, HttpServletResponse response) throws Exception {
         TokenInfo tokenInfo = memberService.login(request);
+        response.setHeader("Authorization", tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken());
         return tokenInfo;
     }
 
@@ -56,5 +56,10 @@ public class MemberController {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/community")
+    public String comm() {
+        return "/community/main";
     }
 }

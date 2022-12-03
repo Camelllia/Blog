@@ -10,14 +10,14 @@ var login = function () {
         type : "POST",
         contentType: "application/json",
         data : JSON.stringify(param),
-        success : function(data) {
-            alert(data);
+        success : function(response) {
+            saveAuthToken(response);
+            //location.href= "/community";
         },
         error : function(request) {
             alert(request.responseText);
         }
     });
-
 }
 
 var join = function () {
@@ -43,5 +43,18 @@ var join = function () {
             alert(request.responseText);
         }
     });
-
 }
+
+var saveAuthToken = function (response) {
+    setCookie("grantType", response.grantType, 1);
+    setCookie("accessToken", response.grantType + ' ' + response.accessToken, 1);
+    setCookie("refreshToken", response.refreshToken, 1);
+}
+
+var setCookie = function(name, value, exp) {
+    var date = new Date();
+    date.setTime(date.getTime() + exp*24*60*60*1000);
+    document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+};
+
+

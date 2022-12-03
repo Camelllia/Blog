@@ -11,8 +11,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
@@ -24,6 +26,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         // 1. Request Header 에서 JWT 토큰 추출
         String token = resolveToken((HttpServletRequest) request);
+        System.out.println("token :" + token);
 
         // 2. validateToken 으로 토큰 유효성 검사
         if (token != null && jwtTokenProvider.validateToken(token)) {
@@ -36,10 +39,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     // Request Header 에서 토큰 정보 추출
     private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+
+        String accessToken = Arrays.stream(request.getCookies())
+                .filter(c -> c.getName().equals("accessToken"))
+                .findFirst().map(Cookie::getValue)
+                .orElse(null);
+
+        System.out.println("accessToken : " + accessToken);
+
+        if (StringUtils.hasText(accessToken) && accessToken.startsWith("Bearer")) {
+            return accessToken.substring(7);
         }
+
         return null;
     }
 }
