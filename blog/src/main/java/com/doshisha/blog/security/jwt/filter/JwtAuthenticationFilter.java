@@ -4,8 +4,10 @@ import com.doshisha.blog.security.jwt.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -13,19 +15,37 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    // 인증에서 제외할 url
+    // .antMatchers("/", "/join", "/login", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.svg", "/**/*.ico").permitAll()
+    private static final List<String> EXCLUDE_URL =
+            Collections.unmodifiableList(
+                    Arrays.asList(
+                            "/",
+                            "/join",
+                            "/login",
+                            "/js/**",
+                            "/vendor/**",
+                            "/css/**",
+                            "/img/**"
+                    ));
 
-        // 1. Request Header 에서 JWT 토큰 추출
-        String token = resolveToken((HttpServletRequest) request);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        //1. Request Header 에서 JWT 토큰 추출
+        String token = resolveToken(request);
         System.out.println("token :" + token);
 
         // 2. validateToken 으로 토큰 유효성 검사
@@ -34,16 +54,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        chain.doFilter(request, response);
-    }
+        filterChain.doFilter(request, response);
 
+    }
     // Request Header 에서 토큰 정보 추출
     private String resolveToken(HttpServletRequest request) {
 
-        String accessToken = Arrays.stream(request.getCookies())
-                .filter(c -> c.getName().equals("accessToken"))
-                .findFirst().map(Cookie::getValue)
-                .orElse(null);
+//        String accessToken = Arrays.stream(request.getCookies())
+//                .filter(c -> c.getName().equals("accessToken"))
+//                .findFirst().map(Cookie::getValue)
+//                .orElse(null);
+
+        String accessToken = request.getHeader("Authorizaion");
 
         System.out.println("accessToken : " + accessToken);
 
@@ -52,5 +74,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
 
         return null;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return EXCLUDE_URL.stream().anyMatch(exclude -> new AntPathMatcher().match(exclude, request.getServletPath()));
     }
 }

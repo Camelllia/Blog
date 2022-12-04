@@ -12,7 +12,8 @@ var login = function () {
         data : JSON.stringify(param),
         success : function(response) {
             saveAuthToken(response);
-            //location.href= "/community";
+            alert("로그인 성공");
+            location.href= "/community";
         },
         error : function(request) {
             alert(request.responseText);

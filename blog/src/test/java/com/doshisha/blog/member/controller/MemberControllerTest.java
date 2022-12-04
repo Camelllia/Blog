@@ -3,6 +3,7 @@ package com.doshisha.blog.member.controller;
 import com.doshisha.blog.member.domain.Member;
 import com.doshisha.blog.member.dto.MemberForm;
 import com.doshisha.blog.member.repository.MemberRepository;
+import com.doshisha.blog.security.jwt.filter.JwtAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +11,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.servlet.server.Session;
+import javax.servlet.http.Cookie;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -21,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest
+@Transactional
+@WithMockUser(username = "mockUser")
 class MemberControllerTest {
 
     @Autowired
