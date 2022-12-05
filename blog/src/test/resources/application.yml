@@ -1,0 +1,29 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2_db
+    datasource:
+      url: jdbc:h2:file:~/tistoryDb/testdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
+      driver-class-name: org.h2.Driver
+      username: root
+      password: root
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8505
+
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa

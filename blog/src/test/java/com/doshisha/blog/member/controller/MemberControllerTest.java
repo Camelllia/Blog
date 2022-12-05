@@ -1,10 +1,12 @@
 package com.doshisha.blog.member.controller;
 
 import com.doshisha.blog.member.domain.Member;
+import com.doshisha.blog.member.dto.LoginForm;
 import com.doshisha.blog.member.dto.MemberForm;
 import com.doshisha.blog.member.repository.MemberRepository;
 import com.doshisha.blog.security.jwt.filter.JwtAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -142,8 +144,7 @@ class MemberControllerTest {
 
         //given
         Member firstMember = Member.builder()
-                .email("overlap@test.com")
-                .password("1234")
+                .email("test@test.com")
                 .password("1234")
                 .username("doshisha")
                 .age(33)
@@ -152,7 +153,7 @@ class MemberControllerTest {
         memberRepository.save(firstMember);
 
         MemberForm request = MemberForm.builder()
-                .email("overlap@test.com")
+                .email("test@test.com")
                 .password("1234")
                 .passwordRepeat("1234")
                 .username("name")
@@ -224,6 +225,63 @@ class MemberControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("이메일 형식이 아닙니다"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("미등록 회원 검증")
+    void test7() throws Exception{
+
+        //given
+        LoginForm request = LoginForm.builder()
+                        .email("test@test.com")
+                        .password("1234")
+                        .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                        .cookie(new Cookie("dummyCookie", "dummy"))
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 회원입니다"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("비밀번호 불일치 검증")
+    void test8() throws Exception{
+
+        //given
+        Member newMember = Member.builder()
+                .email("test@test.com")
+                .password("1234")
+                .username("doshisha")
+                .age(33)
+                .build();
+
+        memberRepository.save(newMember);
+
+        LoginForm request = LoginForm.builder()
+                .email("test@test.com")
+                .password("12345")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                        .cookie(new Cookie("dummyCookie", "dummy"))
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("비밀번호가 일치하지 않습니다"))
                 .andDo(print());
     }
 }

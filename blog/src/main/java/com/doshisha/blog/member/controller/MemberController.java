@@ -22,6 +22,11 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @GetMapping("/")
+    public String index() {
+        return "user/login/login";
+    }
+
     @GetMapping("/join")
     public String form(Model model) {
         model.addAttribute("userForm", new MemberForm());
@@ -32,11 +37,6 @@ public class MemberController {
     @ResponseBody
     public void join(@RequestBody @Valid MemberForm request) throws Exception {
         memberService.join(request);
-    }
-
-    @GetMapping("/")
-    public String index() {
-        return "user/login/login";
     }
 
     @PostMapping("/login")

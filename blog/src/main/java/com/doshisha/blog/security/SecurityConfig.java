@@ -25,12 +25,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .deleteCookies("AuthToken", "refreshToken")
+                .and()
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/join", "/login", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.svg", "/**/*.ico", "/**/*.woff").permitAll()
+                .antMatchers("/", "/join", "/login", "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg", "/**/*.svg", "/**/*.ico", "/**/*.woff", "/logout").permitAll()
                 .antMatchers("/community").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()

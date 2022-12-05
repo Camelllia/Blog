@@ -46,6 +46,19 @@ var join = function () {
     });
 }
 
+var logout = function () {
+    $.ajax({
+        url : "/logout",
+        type : "POST",
+        success : function() {
+            location.href= "/";
+        },
+        error : function(request) {
+            alert(request.responseText);
+        }
+    });
+}
+
 var saveAuthToken = function (response) {
     setCookie("AuthToken", response.accessToken, 1);
     setCookie("refreshToken", response.refreshToken, 1);
