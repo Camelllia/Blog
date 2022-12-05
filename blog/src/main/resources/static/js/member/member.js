@@ -13,7 +13,7 @@ var login = function () {
         success : function(response) {
             saveAuthToken(response);
             alert("로그인 성공");
-            location.href= "/community";
+            location.href = '/community';
         },
         error : function(request) {
             alert(request.responseText);
@@ -47,15 +47,9 @@ var join = function () {
 }
 
 var saveAuthToken = function (response) {
-    setCookie("grantType", response.grantType, 1);
-    setCookie("accessToken", response.grantType + ' ' + response.accessToken, 1);
+    setCookie("AuthToken", response.accessToken, 1);
     setCookie("refreshToken", response.refreshToken, 1);
 }
 
-var setCookie = function(name, value, exp) {
-    var date = new Date();
-    date.setTime(date.getTime() + exp*24*60*60*1000);
-    document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
-};
 
 

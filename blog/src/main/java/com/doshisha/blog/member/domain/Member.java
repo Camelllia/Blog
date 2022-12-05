@@ -1,15 +1,13 @@
 package com.doshisha.blog.member.domain;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -23,19 +21,25 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "user_email", updatable = false, unique = true, nullable = false)
     private String email;
 
-    @Column(name = "user_age")
+    @Column(name = "user_age", nullable = false)
     private Integer age;
 
-    @Column(name = "user_role")
+    @Column(name = "user_role", nullable = false)
     private String role;
+
+    @Column(name = "reg_date")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date regDate;
 
     @Builder
     public Member(Long id, String username, String password, String email, Integer age) {

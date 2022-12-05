@@ -68,6 +68,7 @@ class MemberControllerTest {
         //expected
         mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
+                        .cookie(new Cookie("dummyCookie", "dummy"))
                         .content(json)
                         .with(csrf())
                 )
@@ -93,6 +94,7 @@ class MemberControllerTest {
         //when
         mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
+                        .cookie(new Cookie("dummyCookie", "dummy"))
                         .content(json)
                 )
                 .andExpect(status().isOk())
@@ -124,8 +126,8 @@ class MemberControllerTest {
         //expected
         mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
+                        .cookie(new Cookie("dummyCookie", "dummy"))
                         .content(json)
-                        .with(csrf())
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
@@ -140,7 +142,7 @@ class MemberControllerTest {
 
         //given
         Member firstMember = Member.builder()
-                .email("test@test.com")
+                .email("overlap@test.com")
                 .password("1234")
                 .password("1234")
                 .username("doshisha")
@@ -150,7 +152,7 @@ class MemberControllerTest {
         memberRepository.save(firstMember);
 
         MemberForm request = MemberForm.builder()
-                .email("test@test.com")
+                .email("overlap@test.com")
                 .password("1234")
                 .passwordRepeat("1234")
                 .username("name")
@@ -163,7 +165,7 @@ class MemberControllerTest {
         mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
                         .content(json)
-                        .with(csrf())
+                        .cookie(new Cookie("dummyCookie", "dummy"))
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
@@ -190,7 +192,7 @@ class MemberControllerTest {
         mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
                         .content(json)
-                        .with(csrf())
+                        .cookie(new Cookie("dummyCookie", "dummy"))
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))
@@ -217,7 +219,7 @@ class MemberControllerTest {
         mockMvc.perform(post("/join")
                         .contentType(APPLICATION_JSON)
                         .content(json)
-                        .with(csrf())
+                        .cookie(new Cookie("dummyCookie", "dummy"))
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("400"))

@@ -1,6 +1,7 @@
 package com.doshisha.blog.member.service;
 
 import com.doshisha.blog.member.exception.*;
+import com.doshisha.blog.member.vaildator.MemberVaildator;
 import com.doshisha.blog.security.jwt.dto.TokenInfo;
 import com.doshisha.blog.security.jwt.provider.JwtTokenProvider;
 import com.doshisha.blog.member.domain.Member;
@@ -33,11 +34,11 @@ public class MemberService {
     @Transactional
     public void join(MemberForm request) {
 
-        if(!passwordEqaulCheckValidator(request.getPassword(), request.getPasswordRepeat())) {
+        if(!MemberVaildator.passwordEqaulCheckValidator(request.getPassword(), request.getPasswordRepeat())) {
             throw new DiscordPassword();
         }
 
-        if(!isValidEmail(request.getEmail())) {
+        if(!MemberVaildator.isValidEmail(request.getEmail())) {
             throw new InvalidEmailPattern();
         }
 
@@ -58,7 +59,7 @@ public class MemberService {
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(MemberNotFound::new);
 
-        if(!passwordValidator(member, request.getPassword())) {
+        if(!MemberVaildator.passwordValidator(member, request.getPassword())) {
             throw new PasswordMismatch();
         }
 
@@ -70,21 +71,5 @@ public class MemberService {
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
         return tokenInfo;
-    }
-
-    public boolean passwordValidator(Member member, String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.matches(password, member.getPassword());
-    }
-
-    public boolean passwordEqaulCheckValidator(String password, String passwordRepeat) {
-        return password.equals(passwordRepeat);
-    }
-
-    public boolean isValidEmail(String email) {
-        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(email);
-        return m.matches();
     }
 }
