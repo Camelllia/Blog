@@ -26,7 +26,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws MemberNotFound {
-        System.out.println(username);
         Member member = memberRepository.findByEmail(username)
                 .orElseThrow(MemberNotFound::new);
 
