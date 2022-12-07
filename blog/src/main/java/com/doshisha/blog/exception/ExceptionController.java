@@ -1,11 +1,14 @@
 package com.doshisha.blog.exception;
 
+import com.doshisha.blog.community.domain.BoardMenu;
+import com.doshisha.blog.community.exception.BoardMenuNotFound;
 import com.doshisha.blog.member.exception.*;
 import com.doshisha.blog.member.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class ExceptionController {
@@ -84,5 +87,10 @@ public class ExceptionController {
                 .build();
 
         return errorResponse;
+    }
+
+    @ExceptionHandler(BoardMenuNotFound.class)
+    public String invaildRequestHandler(BoardMenuNotFound e) {
+        return "redirect:/community";
     }
 }
