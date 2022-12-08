@@ -4,7 +4,9 @@ import com.doshisha.blog.member.domain.Member;
 import com.doshisha.blog.member.dto.LoginForm;
 import com.doshisha.blog.member.dto.MemberForm;
 import com.doshisha.blog.member.repository.MemberRepository;
+import com.doshisha.blog.security.jwt.dto.TokenInfo;
 import com.doshisha.blog.security.jwt.filter.JwtAuthenticationFilter;
+import com.doshisha.blog.security.jwt.provider.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.servlet.server.Session;
 import javax.servlet.http.Cookie;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,6 +49,9 @@ class MemberControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @BeforeEach
     void clean() {
@@ -283,5 +289,39 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("비밀번호가 일치하지 않습니다"))
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인 성공시 JWT 토큰을 리턴한다")
+    void test9() throws Exception{
+
+        //given
+        Member newMember = Member.builder()
+                .email("test@test.com")
+                .password(new BCryptPasswordEncoder().encode("1234"))
+                .username("doshisha")
+                .age(33)
+                .build();
+
+        memberRepository.save(newMember);
+
+        LoginForm request = LoginForm.builder()
+                .email("test@test.com")
+                .password("1234")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                        .cookie(new Cookie("dummyCookie", "dummy"))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grantType").value("Bearer"))
+                .andDo(print());
+
+        System.out.println(jsonPath("$.grantType").toString());
     }
 }
