@@ -9,5 +9,5 @@
 - 개발 언어 : Java(Java 11)
 - 개발 환경 : SpringBoot(2.6.13)
 - 배포환경 : Apache Tomcat, AWS EC2, AWS RDS
-- TEST : JUNIT5
+- TEST : Junit5
 - DB : H2, MySQL
