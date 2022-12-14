@@ -8,6 +8,6 @@
 # 사용 기술
 - 개발 언어 : Java(Java 11)
 - 개발 환경 : SpringBoot(2.6.13)
-- 배포환경 : Apache Tomcat, AWS EC2, AWS RDS
+- 배포 : Apache Tomcat, AWS EC2, AWS RDS
 - TEST : Junit5
 - DB : H2, MySQL
