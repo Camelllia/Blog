@@ -1,6 +1,7 @@
 package com.doshisha.blog.community.service;
 
 import com.doshisha.blog.community.domain.BoardMenu;
+import com.doshisha.blog.community.exception.BoardMenuNotFound;
 import com.doshisha.blog.community.repository.BoardMenuRepository;
 import com.doshisha.blog.member.domain.Member;
 import com.doshisha.blog.member.dto.MemberForm;
@@ -100,12 +101,12 @@ class CommunityServiceTest {
 
         boardMenuRepository.save(request);
 
-        //when
-        Optional<BoardMenu> boardMenuFree = boardMenuRepository.findByMenuPathAndDeleteYnFalse("/free");
-        Optional<BoardMenu> boardMenuNotice = boardMenuRepository.findByMenuPathAndDeleteYnFalse("/notice");
-
-        //then
-        assertFalse(boardMenuFree.isPresent());
-        assertFalse(boardMenuNotice.isPresent());
+        //expected
+        assertThrows(BoardMenuNotFound.class, () -> {
+            communityService.selectBoardMenu("/free");
+        });
+        assertThrows(BoardMenuNotFound.class, () -> {
+            communityService.selectBoardMenu("/notice");
+        });
     }
 }
