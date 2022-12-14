@@ -21,7 +21,7 @@ public class CommunityService {
     }
 
     public BoardMenu selectBoardMenu(String menuPath) {
-        return boardMenuRepository.findByMenuPath(menuPath)
+        return boardMenuRepository.findByMenuPathAndDeleteYnFalse(menuPath)
                 .orElseThrow(BoardMenuNotFound::new);
     }
 }

@@ -41,16 +41,13 @@ class MemberControllerTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
     @BeforeEach
     void clean() {
         memberRepository.deleteAll();
     }
 
     @Test
-    @DisplayName("회원가입 성공시 리다이렉트")
+    @DisplayName("회원가입 - 성공시 리다이렉트")
     void test1() throws Exception{
 
         //given
@@ -76,7 +73,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 성공시 DB에 값 저장")
+    @DisplayName("회원가입 - 성공시 DB에 값 저장")
     void test2() throws Exception{
 
         //given
@@ -109,7 +106,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입시 이메일은 필수다")
+    @DisplayName("회원가입 - 이메일은 필수다")
     void test3() throws Exception{
 
         //given
@@ -136,7 +133,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("동일한 이메일로 중복가입 방지")
+    @DisplayName("회원가입 - 동일한 이메일로 중복가입 방지")
     void test4() throws Exception{
 
         //given
@@ -172,7 +169,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입시 비밀번호는 일치해야한다")
+    @DisplayName("회원가입 - 비밀번호는 일치해야한다")
     void test5() throws Exception{
 
         //given
@@ -199,7 +196,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입시 이메일 형식을 지켜야한다")
+    @DisplayName("회원가입 - 이메일 형식을 지켜야한다")
     void test6() throws Exception{
 
         //given
@@ -226,7 +223,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("미등록 회원 검증")
+    @DisplayName("로그인 - 미등록 회원 검증")
     void test7() throws Exception{
 
         //given
@@ -250,7 +247,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("비밀번호 불일치 검증")
+    @DisplayName("로그인 - 비밀번호 불일치 검증")
     void test8() throws Exception{
 
         //given
@@ -283,7 +280,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 성공시 JWT 토큰을 리턴한다")
+    @DisplayName("로그인 - 성공시 JWT 토큰을 리턴한다")
     void test9() throws Exception{
 
         //given
@@ -311,6 +308,31 @@ class MemberControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.grantType").value("Bearer"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그인 - Validation 검증")
+    void test10() throws Exception{
+
+        //given
+        LoginForm request = LoginForm.builder()
+                .email("")
+                .password("1234")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
+        //expected
+        mockMvc.perform(post("/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(json)
+                        .cookie(new Cookie("dummyCookie", "dummy"))
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다"))
+                .andExpect(jsonPath("$.vaildation.email").value("이메일을 입력해주세요"))
                 .andDo(print());
     }
 }

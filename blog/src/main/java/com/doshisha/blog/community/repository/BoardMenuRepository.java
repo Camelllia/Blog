@@ -12,5 +12,5 @@ public interface BoardMenuRepository extends JpaRepository<BoardMenu, Long> {
 
     List<BoardMenu> findAllByDeleteYnFalse();
 
-    Optional<BoardMenu> findByMenuPath(String menuPath);
+    Optional<BoardMenu> findByMenuPathAndDeleteYnFalse(String menuPath);
 }

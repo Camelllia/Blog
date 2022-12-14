@@ -42,10 +42,11 @@ public class BoardMenu {
     private Date regDate;
 
     @Builder
-    public BoardMenu(Long id, String menuName, String menuPath, Boolean writeYn) {
+    public BoardMenu(Long id, String menuName, String menuPath, Boolean writeYn, Boolean deleteYn) {
         this.id = id;
         this.menuName = menuName;
         this.menuPath = menuPath;
         this.writeYn = writeYn;
+        this.deleteYn = deleteYn;
     }
 }
