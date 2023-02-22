@@ -52,7 +52,7 @@ public class BoardService {
 
         boardRepository.save(board);
 
-        return new ResponseEntity<>("22", HttpStatus.OK);
+        return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
 }
