@@ -2,7 +2,7 @@ package com.doshisha.blog.community.service;
 
 import com.doshisha.blog.community.domain.BoardMenu;
 import com.doshisha.blog.community.exception.BoardMenuNotFound;
-import com.doshisha.blog.community.repository.BoardMenuRepository;
+import com.doshisha.blog.community.repository.boardMenu.BoardMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

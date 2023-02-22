@@ -1,7 +1,16 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'java'
+	id 'war'
 	id 'org.springframework.boot' version '2.6.13'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	// QueryDSL 모델 파일을 생성하기 위한 플러그인
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.doshisha'
@@ -31,6 +40,12 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.1'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.1'
+
+	// querydsl
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-core:${queryDslVersion}"
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
@@ -38,6 +53,30 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+// querydsl 설정
+
+// querydsl 빌드 경로 변수
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+// build 시 사용할 sourceSet 추가
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+
+// querydsl 컴파일시 사용할 옵션 설정
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
 }
 
 tasks.named('test') {

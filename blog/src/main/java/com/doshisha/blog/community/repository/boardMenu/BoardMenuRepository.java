@@ -1,4 +1,4 @@
-package com.doshisha.blog.community.repository;
+package com.doshisha.blog.community.repository.boardMenu;
 
 import com.doshisha.blog.community.domain.BoardMenu;
 import org.springframework.data.jpa.repository.JpaRepository;

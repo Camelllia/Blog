@@ -2,10 +2,7 @@ package com.doshisha.blog.community.service;
 
 import com.doshisha.blog.community.domain.BoardMenu;
 import com.doshisha.blog.community.exception.BoardMenuNotFound;
-import com.doshisha.blog.community.repository.BoardMenuRepository;
-import com.doshisha.blog.member.domain.Member;
-import com.doshisha.blog.member.dto.MemberForm;
-import com.doshisha.blog.member.repository.MemberRepository;
+import com.doshisha.blog.community.repository.boardMenu.BoardMenuRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
