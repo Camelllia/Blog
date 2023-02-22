@@ -17,11 +17,11 @@ public class CommunityService {
     private final BoardMenuRepository boardMenuRepository;
 
     public List<BoardMenu> selectBoardMenuList() {
-        return boardMenuRepository.findAllByDeleteYnFalse();
+        return boardMenuRepository.findAllByDelYnFalse();
     }
 
     public BoardMenu selectBoardMenu(String menuPath) {
-        return boardMenuRepository.findByMenuPathAndDeleteYnFalse(menuPath)
+        return boardMenuRepository.findByMenuPathAndDelYnFalse(menuPath)
                 .orElseThrow(BoardMenuNotFound::new);
     }
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface BoardMenuRepository extends JpaRepository<BoardMenu, Long> {
 
-    List<BoardMenu> findAllByDeleteYnFalse();
+    List<BoardMenu> findAllByDelYnFalse();
 
-    Optional<BoardMenu> findByMenuPathAndDeleteYnFalse(String menuPath);
+    Optional<BoardMenu> findByMenuPathAndDelYnFalse(String menuPath);
 }

@@ -32,9 +32,9 @@ public class BoardMenu {
     @ColumnDefault("true")
     private Boolean writeYn;
 
-    @Column(name = "deleteYn", nullable = false)
+    @Column(name = "delYn", nullable = false)
     @ColumnDefault("false")
-    private Boolean deleteYn;
+    private Boolean delYn;
 
     @Column(name = "reg_date")
     @CreationTimestamp
@@ -42,11 +42,11 @@ public class BoardMenu {
     private Date regDate;
 
     @Builder
-    public BoardMenu(Long id, String menuName, String menuPath, Boolean writeYn, Boolean deleteYn) {
+    public BoardMenu(Long id, String menuName, String menuPath, Boolean writeYn, Boolean delYn) {
         this.id = id;
         this.menuName = menuName;
         this.menuPath = menuPath;
         this.writeYn = writeYn;
-        this.deleteYn = deleteYn;
+        this.delYn = delYn;
     }
 }
