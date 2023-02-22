@@ -16,11 +16,29 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
     }
 
     @Override
+    public List<Board> findMainBoardList() {
+        return jpaQueryFactory.selectFrom(board)
+                .where(board.delYn.eq(Boolean.FALSE))
+                .orderBy(board.regDate.desc())
+                .fetch();
+    }
+
+    @Override
     public List<Board> findBoardListByMenu(Long id) {
         return jpaQueryFactory.selectFrom(board)
                 .where(board.boardMenu.id.eq(id))
                 .where(board.delYn.eq(Boolean.FALSE))
                 .orderBy(board.regDate.desc())
                 .fetch();
+    }
+
+    @Override
+    public Board findBoardItem(Long menuId, Long boardId) {
+        return jpaQueryFactory.selectFrom(board)
+                .where(board.boardMenu.id.eq(menuId))
+                .where(board.id.eq(boardId))
+                .where(board.delYn.eq(Boolean.FALSE))
+                .orderBy(board.regDate.desc())
+                .fetchOne();
     }
 }

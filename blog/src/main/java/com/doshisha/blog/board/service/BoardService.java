@@ -13,7 +13,16 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    public List<Board> findMainBoardList() {
+        return boardRepository.findMainBoardList();
+    }
+
     public List<Board> findBoardListByMenu(Long menuId) {
         return boardRepository.findBoardListByMenu(menuId);
     }
+
+    public Board findBoardItem(Long menuId, Long boardId) {
+        return boardRepository.findBoardItem(menuId, boardId);
+    }
+
 }
