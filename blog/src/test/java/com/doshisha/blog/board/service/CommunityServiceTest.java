@@ -1,8 +1,8 @@
-package com.doshisha.blog.community.service;
+package com.doshisha.blog.board.service;
 
-import com.doshisha.blog.community.domain.BoardMenu;
-import com.doshisha.blog.community.exception.BoardMenuNotFound;
-import com.doshisha.blog.community.repository.boardMenu.BoardMenuRepository;
+import com.doshisha.blog.boardMenu.domain.BoardMenu;
+import com.doshisha.blog.boardMenu.exception.BoardMenuNotFound;
+import com.doshisha.blog.boardMenu.repository.BoardMenuRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CommunityServiceTest {
 
     @Autowired
-    CommunityService communityService;
+    BoardService communityService;
 
     @Autowired
     BoardMenuRepository boardMenuRepository;

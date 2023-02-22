@@ -1,6 +1,5 @@
 package com.doshisha.blog.member.service;
 
-import com.doshisha.blog.community.exception.BoardMenuNotFound;
 import com.doshisha.blog.member.domain.Member;
 import com.doshisha.blog.member.dto.LoginForm;
 import com.doshisha.blog.member.dto.MemberForm;
@@ -14,11 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 

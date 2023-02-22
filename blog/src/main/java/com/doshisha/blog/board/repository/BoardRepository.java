@@ -1,9 +1,7 @@
-package com.doshisha.blog.community.repository.board;
+package com.doshisha.blog.board.repository;
 
-import com.doshisha.blog.community.domain.Board;
+import com.doshisha.blog.board.domain.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
 

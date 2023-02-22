@@ -1,4 +1,4 @@
-package com.doshisha.blog.community.exception;
+package com.doshisha.blog.boardMenu.exception;
 
 public class BoardMenuNotFound extends RuntimeException {
 

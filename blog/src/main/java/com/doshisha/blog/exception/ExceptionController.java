@@ -1,6 +1,6 @@
 package com.doshisha.blog.exception;
 
-import com.doshisha.blog.community.exception.BoardMenuNotFound;
+import com.doshisha.blog.boardMenu.exception.BoardMenuNotFound;
 import com.doshisha.blog.member.exception.*;
 import com.doshisha.blog.member.response.ErrorResponse;
 import org.springframework.http.HttpStatus;

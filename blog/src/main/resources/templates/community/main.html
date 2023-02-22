@@ -113,12 +113,12 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Community List</h6>
                         <div th:each="menuList : ${boardMenuList}">
-                            <a class="collapse-item" th:href="@{/community/{menuPath}(menuPath=${menuList.menuPath})}" th:text="${menuList.menuName}" th:if="${menuList.writeYn}"></a>
+                            <a class="collapse-item" th:href="@{/community/{menuId}(menuId=${menuList.id})}" th:text="${menuList.menuName}" th:if="${menuList.writeYn}"></a>
                         </div>
                         <div class="collapse-divider"></div>
                             <h6 class="collapse-header">Community Notice</h6>
                             <div th:each="menuList : ${boardMenuList}">
-                                <a class="collapse-item" th:href="@{/community/{menuPath}(menuPath=${menuList.menuPath})}" th:text="${menuList.menuName}" th:if="not ${menuList.writeYn}"></a>
+                                <a class="collapse-item" th:href="@{/community/{menuId}(menuId=${menuList.id})}" th:text="${menuList.menuName}" th:if="not ${menuList.writeYn}"></a>
                             </div>
                     </div>
                 </div>

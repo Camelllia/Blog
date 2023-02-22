@@ -1,6 +1,6 @@
-package com.doshisha.blog.community.controller;
+package com.doshisha.blog.board.controller;
 
-import com.doshisha.blog.community.repository.boardMenu.BoardMenuRepository;
+import com.doshisha.blog.boardMenu.repository.BoardMenuRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
-package com.doshisha.blog.community.domain;
+package com.doshisha.blog.board.domain;
 
+import com.doshisha.blog.boardMenu.domain.BoardMenu;
 import com.doshisha.blog.member.domain.Member;
 import lombok.Builder;
 import lombok.Data;
