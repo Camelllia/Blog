@@ -1,6 +1,7 @@
 package com.doshisha.blog.security.jwt.filter;
 
 import com.doshisha.blog.security.jwt.provider.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
